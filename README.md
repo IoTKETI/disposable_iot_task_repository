@@ -1,10 +1,9 @@
 # Task Repository
 
 - 전체 정보
-
   - Documentation 폴더
     - API 명세서
-      - DB 정보
+    - DB 정보
   
 - 사전 작업
 
