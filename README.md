@@ -1,9 +1,15 @@
 # Task Repository
 
+- 전체 정보
+
+  - Documentation 폴더
+  - API 명세서
+    - DB 정보
+  
 - 사전 작업
 
   - Postgresql db 설치
-    - 동일 폴더내의 postgresql 설치 가이드 v0.1.pptx 참고
+    - 하위폴더 Documentation 내의 postgresql 설치 가이드 v0.1.pptx 참고
   - ddl 적용
     - psql -U "UserId" -f "경로/task_service_backup_191226.sql"
     - table 생성 및 예제(row) 정보들이 포함되어 있음
