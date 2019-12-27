@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.re.keti.disposable.taskservice.mapper.CategoryMapper">
+
+    <resultMap id="Category" type="kr.re.keti.disposable.taskservice.category.Category" autoMapping="true">
+        <id property="id" column="ParentCategoryId" />
+        <result property="name" column="ParentCategoryName" />
+        <result property="type" column="ParentCategoryType"/>
+        <result property="useYn" column="ParentCategoryUseYesOrNO" />
+        <result property="order" column="ParentCategoryOrder" />
+        <result property="description" column="ParentCategoryDescription" />
+        <result property="creator" column="ParentCategoryCreatorId" />
+        <result property="updater" column="ParentCategoryMODIFIERUserId" />
+        <result property="createdAt" column="ParentCategoryCreatedTime" />
+        <result property="updatedAt" column="ParentCategoryUpdatedTime" />
+        <collection property="services" ofType="kr.re.keti.disposable.taskservice.task.Service" javaType="java.util.ArrayList">
+            <result property="id" column="ServiceId" />
+            <result property="name" column="ServiceName" />
+            <result property="type" column="ServiceType"/>
+            <result property="description" column="ServiceDescription" />
+            <result property="useYn" column="ServiceUseYesOrNo" />
+            <result property="creator" column="ServiceCreator" />
+            <result property="modifier" column="ServiceModifier" />
+            <result property="createdTime" column="ServiceCreatedTime" />
+            <result property="modifiedTime" column="ServiceModifiedTime" />
+        </collection>
+        <collection property="microServices" ofType="kr.re.keti.disposable.taskservice.task.MicroService" javaType="java.util.ArrayList">
+            <result property="id" column="MicroServiceId" />
+            <result property="name" column="MicroServiceName" />
+            <result property="type" column="MicroServiceType"/>
+            <result property="description" column="MicroServiceDescription" />
+            <result property="useYn" column="MicroServiceUseYesOrNo" />
+            <result property="creator" column="MicroServiceCreator" />
+            <result property="modifier" column="MicroServiceModifier" />
+            <result property="createdTime" column="MicroServiceCreatedTime" />
+            <result property="modifiedTime" column="MicroServiceModifiedTime" />
+        </collection>
+        <collection property="tasks" ofType="kr.re.keti.disposable.taskservice.task.Task" javaType="java.util.ArrayList">
+            <result property="id" column="TaskId" />
+            <result property="name" column="TaskName" />
+            <result property="type" column="TaskType"/>
+            <result property="description" column="TaskDescription" />
+            <result property="inputParameters" column="TaskInputParameter" />
+            <result property="temperatureType" column="DeviceTaskTemperatureType" />
+            <result property="useYn" column="TaskUseYesOrNo" />
+            <result property="creator" column="TaskCreator" />
+            <result property="modifier" column="TaskModifier" />
+            <result property="createdTime" column="TaskCreatedTime" />
+            <result property="modifiedTime" column="TaskModifiedTime" />
+        </collection>
+    </resultMap>
+
+    <select id="findOne" resultMap="Category">
+        SELECT P.CATEGORY_ID AS "ParentCategoryId", P.NAME AS "ParentCategoryName", P.TYPE AS "ParentCategoryType",
+        	   P.ORDER AS "ParentCategoryOrder", P.USE_YES_OR_NO AS "ParentCategoryUseYesOrNO", P.DESCRIPTION AS "ParentCategoryDescription",
+        	   P.CREATOR_ID AS "ParentCategoryCreatorId", P.CREATED_TIME AS "ParentCategoryCreatedDate",
+        	   S.SERVICE_ID AS "ServiceId" , S.NAME AS "ServiceName", S.TYPE AS "ServiceType", S.DESCRIPTION AS "ServiceDescription", S.USE_YES_OR_NO AS "ServiceUseYesOrNo",
+               S.CREATOR_ID AS "ServiceCreator", S.MODIFIER_ID AS "ServiceModifier", S.CREATED_TIME AS "ServiceCreatedTime", S.MODIFIED_TIME AS "ServiceModifiedTime",
+               M.MICROSERVICE_ID AS "MicroServiceId" , M.NAME AS "MicroServiceName", M.TYPE AS "MicroServiceType", M.DESCRIPTION AS "MicroServiceDescription", M.USE_YES_OR_NO AS "MicroServiceUseYesOrNo",
+               M.CREATOR_ID AS "MicroServiceCreator", M.MODIFIER_ID AS "MicroServiceModifier", M.CREATED_TIME AS "MicroServiceCreatedTime", M.MODIFIED_TIME AS "MicroServiceModifiedTime",
+               T.TASK_ID AS "TaskId" , T.NAME AS "TaskName", T.DESCRIPTION AS "TaskDescription", T.USE_YES_OR_NO AS "TaskUseYesOrNo", T.TYPE AS "TaskType",
+               T.CREATOR_ID AS "TaskCreator", T.MODIFIER_ID AS "TaskModifier", T.CREATED_TIME AS "TaskCreatedTime", T.MODIFIED_TIME AS "TaskModifiedTime"
+		FROM disposable.Category AS P
+         LEFT OUTER JOIN disposable.SERVICE AS S on (P.CATEGORY_ID = S.CATEGORY_ID)
+         LEFT OUTER JOIN disposable.MICROSERVICE AS M on (P.CATEGORY_ID = M.CATEGORY_ID)
+         LEFT OUTER JOIN disposable.TASK AS T on (P.CATEGORY_ID = T.CATEGORY_ID)
+		WHERE P.CATEGORY_ID  = CH.PARENT_ID AND P.CATEGORY_ID = #{id}
+		ORDER BY P.ORDER, S.SERVICE_ID, M.MICROSERVICE_ID, T.TASK_ID asc;
+    </select>
+
+    <select id="findAll" resultMap="Category">
+        SELECT P.CATEGORY_ID AS "ParentCategoryId", P.NAME AS "ParentCategoryName", P.TYPE AS "ParentCategoryType",
+        	   P.ORDER AS "ParentCategoryOrder", P.USE_YES_OR_NO AS "ParentCategoryUseYesOrNO", P.DESCRIPTION AS "ParentCategoryDescription",
+        	   P.CREATOR_ID AS "ParentCategoryCreatorId", P.CREATED_TIME AS "ParentCategoryCreatedDate",
+        	   S.SERVICE_ID AS "ServiceId" , S.NAME AS "ServiceName", S.TYPE AS "ServiceType", S.DESCRIPTION AS "ServiceDescription", S.USE_YES_OR_NO AS "ServiceUseYesOrNo",
+               S.CREATOR_ID AS "ServiceCreator", S.MODIFIER_ID AS "ServiceModifier", S.CREATED_TIME AS "ServiceCreatedTime", S.MODIFIED_TIME AS "ServiceModifiedTime",
+               M.MICROSERVICE_ID AS "MicroServiceId" , M.NAME AS "MicroServiceName", M.TYPE AS "MicroServiceType", M.DESCRIPTION AS "MicroServiceDescription", M.USE_YES_OR_NO AS "MicroServiceUseYesOrNo",
+               M.CREATOR_ID AS "MicroServiceCreator", M.MODIFIER_ID AS "MicroServiceModifier", M.CREATED_TIME AS "MicroServiceCreatedTime", M.MODIFIED_TIME AS "MicroServiceModifiedTime",
+               T.TASK_ID AS "TaskId" , T.NAME AS "TaskName", T.DESCRIPTION AS "TaskDescription", T.USE_YES_OR_NO AS "TaskUseYesOrNo", T.TYPE AS "TaskType",
+               T.CREATOR_ID AS "TaskCreator", T.MODIFIER_ID AS "TaskModifier", T.CREATED_TIME AS "TaskCreatedTime", T.MODIFIED_TIME AS "TaskModifiedTime"
+		FROM disposable.Category AS P
+         LEFT OUTER JOIN disposable.SERVICE AS S on (P.CATEGORY_ID = S.CATEGORY_ID)
+         LEFT OUTER JOIN disposable.MICROSERVICE AS M on (P.CATEGORY_ID = M.CATEGORY_ID)
+         LEFT OUTER JOIN disposable.TASK AS T on (P.CATEGORY_ID = T.CATEGORY_ID)
+		ORDER BY P.ORDER, S.SERVICE_ID, M.MICROSERVICE_ID, T.TASK_ID asc;
+    </select>
+
+    
+
+</mapper>

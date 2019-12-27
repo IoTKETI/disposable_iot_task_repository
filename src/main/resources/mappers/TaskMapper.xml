@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.re.keti.disposable.taskservice.mapper.TaskMapper">
+
+
+    <resultMap id="Task" type="kr.re.keti.disposable.taskservice.task.Task" autoMapping="true">
+        <result property="id" column="TaskId" />
+        <result property="name" column="TaskName" />
+        <result property="type" column="TaskType"/>
+        <result property="description" column="TaskDescription" />
+        <result property="inputParameters" column="TaskInputParameter" />
+        <result property="temperatureType" column="DeviceTaskTemperatureType" />
+        <result property="useYn" column="TaskUseYesOrNo" />
+        <result property="creator" column="TaskCreator" />
+        <result property="modifier" column="TaskModifier" />
+        <result property="createdTime" column="TaskCreatedTime" />
+        <result property="modifiedTime" column="TaskModifiedTime" />
+        <association property="category" javaType="kr.re.keti.disposable.taskservice.category.Category">
+            <id property="id" column="CategoryId" />
+            <result property="name" column="CategoryName" />
+        </association>
+        <collection property="outputParameters" column="TaskId" ofType="kr.re.keti.disposable.taskservice.task.OutPutParameter" javaType="java.util.ArrayList">
+            <id property="id" column="OutPutParameterId" />
+            <result property="dataType" column="OutPutParameterDataType"/>
+            <result property="unitCategory" column="OutPutParameterUnitCategory" />
+            <result property="unit" column="OutPutParameterUnit" />
+            <result property="minValue" column="OutPutParameterMinValue" />
+            <result property="maxValue" column="OutPutParameterMaxValue" />
+        </collection>
+        <collection property="flexibleParameters" column="TaskId" ofType="kr.re.keti.disposable.taskservice.task.FlexibleParameter" javaType="java.util.ArrayList">
+            <id property="id" column="FlexibleParameterId" />
+            <result property="dataType" column="FlexibleParameterDataType" />
+            <result property="fullName" column="FlexibleParameterFullName" />
+            <result property="shortName" column="FlexibleParameterShortName" />
+            <result property="value" column="FlexibleParameterValue" />
+        </collection>
+        <collection property="staticParameters" column="TaskId" ofType="kr.re.keti.disposable.taskservice.task.StaticParameter" javaType="java.util.ArrayList">
+            <id property="id" column="StaticParameterId" />
+            <result property="dataType" column="StaticParameterDataType"/>
+            <result property="fullName" column="StaticParameterFullName" />
+            <result property="shortName" column="StaticParameterShortName" />
+            <result property="value" column="StaticParameterValue" />
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="Task">
+        SELECT
+        T.TASK_ID AS "TaskId" , T.NAME AS "TaskName", T.DESCRIPTION AS "TaskDescription", T.USE_YES_OR_NO AS "TaskUseYesOrNo", T.TYPE AS "TaskType",
+        T.CREATOR_ID AS "TaskCreator", T.MODIFIER_ID AS "TaskModifier", T.CREATED_TIME AS "TaskCreatedTime", T.MODIFIED_TIME AS "TaskModifiedTime",
+        O.OUTPUT_PARAMETER_ID AS "OutPutParameterId", O.DATA_TYPE AS "OutPutParameterDataType", O.UNIT_CATEGORY AS "OutPutParameterUnitCategory",
+        O.UNIT AS "OutPutParameterUnit", O.MIN_VALUE AS "OutPutParameterMinValue", O.MAX_VALUE AS "OutPutParameterMaxValue",
+        S.STATIC_PARAMETER_ID AS "StaticParameterId",S.DATA_TYPE AS "StaticParameterDataType", S.FULL_NAME AS "StaticParameterFullName", S.SHORT_NAME AS "StaticParameterShortName", S.VALUE AS "StaticParameterValue",
+        F.FLEXIBLE_PARAMETER_ID AS "FlexibleParameterId", F.DATA_TYPE AS "FlexibleParameterDataType", F.FULL_NAME AS "FlexibleParameterFullName", F.SHORT_NAME AS "FlexibleParameterShortName", F.VALUE AS "FlexibleParameterValue",
+        C.CATEGORY_ID AS "CategoryId", C.NAME AS "CategoryName"
+        FROM TASK AS T
+        LEFT OUTER JOIN OUTPUT_PARAMETER AS O on (T.TASK_ID = O.TASK_ID)
+        LEFT OUTER JOIN FLEXIBLE_PARAMETER AS F on (T.TASK_ID = F.TASK_ID)
+        LEFT OUTER JOIN STATIC_PARAMETER AS S on (T.TASK_ID = S.TASK_ID)
+        LEFT OUTER JOIN CATEGORY AS C on (T.CATEGORY_ID = C.CATEGORY_ID)
+        AND T.USE_YES_OR_NO = 'Y'
+        <include refid="conditionalSearch"></include>
+        ORDER BY T.task_id ASC
+    </select>
+
+    <sql id="conditionalSearch">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="id != null">
+                AND T.TASK_ID = #{id}
+            </if>
+            <if test="category_id = null">
+                AND T.CATEGORY_ID = #{category}
+            </if>
+            <if test="name != null">
+                <bind name="name" value="'%'+name+'%'"/>
+                AND T.NAME LIKE #{name}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="findOne" resultMap="Task">
+        SELECT
+        T.TASK_ID AS "TaskId" , T.NAME AS "TaskName", T.DESCRIPTION AS "TaskDescription", T.USE_YES_OR_NO AS "TaskUseYesOrNo", T.TYPE AS "TaskType",
+        T.CREATOR_ID AS "TaskCreator", T.MODIFIER_ID AS "TaskModifier", T.CREATED_TIME AS "TaskCreatedTime", T.MODIFIED_TIME AS "TaskModifiedTime",
+        O.OUTPUT_PARAMETER_ID AS "OutPutParameterId", O.DATA_TYPE AS "OutPutParameterDataType", O.UNIT_CATEGORY AS "OutPutParameterUnitCategory",
+        O.UNIT AS "OutPutParameterUnit", O.MIN_VALUE AS "OutPutParameterMinValue", O.MAX_VALUE AS "OutPutParameterMaxValue",
+        S.STATIC_PARAMETER_ID AS "StaticParameterId",S.DATA_TYPE AS "StaticParameterDataType", S.FULL_NAME AS "StaticParameterFullName", S.SHORT_NAME AS "StaticParameterShortName", S.VALUE AS "StaticParameterValue",
+        F.FLEXIBLE_PARAMETER_ID AS "FlexibleParameterId", F.DATA_TYPE AS "FlexibleParameterDataType", F.FULL_NAME AS "FlexibleParameterFullName", F.SHORT_NAME AS "FlexibleParameterShortName", F.VALUE AS "FlexibleParameterValue"
+        FROM TASK AS T
+        LEFT OUTER JOIN OUTPUT_PARAMETER AS O on (T.TASK_ID = O.TASK_ID)
+        LEFT OUTER JOIN FLEXIBLE_PARAMETER AS F on (T.TASK_ID = F.TASK_ID)
+        LEFT OUTER JOIN STATIC_PARAMETER AS S on (T.TASK_ID = S.TASK_ID)
+        AND T.USE_YES_OR_NO = 'Y'
+        WHERE T.TASK_Id = #{id}
+    </select>
+   
+    <sql id="addOutputParameters" >
+        <if test="outputParameters != null and outputParameters > 0">
+            <foreach collection="outputParameters" item="outputParameter" separator=";">
+                INSERT INTO OutputParameter(
+                TASK_ID,
+                DATA_TYPE,
+                UNIT_CATEGORY,
+                UNIT,
+                MIN_VALUE,
+                MAX_VALUE
+                )
+                VALUES (
+                #{Id},
+                #{dataType},
+                #{unitCategory},
+                #{unit},
+                #{min_value},
+                #{max_value}
+                );
+            </foreach>
+        </if>
+    </sql>
+    <sql id="addStaticParameters" >
+        <if test="staticParameters != null and staticParameters > 0">
+            <foreach collection="staticParameters" item="staticParameter" separator=";">
+                INSERT INTO StaticParameter(
+                TASK_ID,
+                STATIC_PARAMETER_ID
+                DATA_TYPE,
+                FULL_NAME,
+                SHORT_NAME,
+                VALUE
+                )
+                VALUES (
+                #{taskId},
+                #{Id},
+                #{dataType},
+                #{fullName},
+                #{shortName},
+                #{value}
+                );
+            </foreach>
+        </if>
+    </sql>
+    <sql id="addFlexibleParameters" >
+        <if test="flexibleParameters != null and flexibleParameters > 0">
+            <foreach collection="flexibleParameters" item="flexibleParameter" separator=";">
+                INSERT INTO StaticParameter(
+                TASK_ID,
+                FLEXIBLE_PARAMETER_ID
+                DATA_TYPE,
+                FULL_NAME,
+                SHORT_NAME,
+                VALUE
+                )
+                VALUES (
+                #{taskId},
+                #{Id},
+                #{dataType},
+                #{fullName},
+                #{shortName},
+                #{value}
+                );
+            </foreach>
+        </if>
+    </sql>
+
+    <insert id="save" parameterType="kr.re.keti.disposable.taskservice.task.Task" >
+        INSERT INTO TASK(
+        TASK_ID,
+        CATEGORY_ID,
+        NAME,
+        TYPE
+        DESCRIPTION,
+        CREATOR_ID,
+        USE_YES_OR_NO,
+        CREATED_TIME
+        )
+        VALUES (
+        #{id},
+        #{category},
+        #{name},
+        #{type},
+        #{description},
+        #{creator},
+        'Y',
+        now()
+        )
+        <include refid="addOutputParameters"></include>
+        <include refid="addStaticParameters"></include>
+        <include refid="addFlexibleParameters"></include>
+    </insert>
+
+    <delete id="delete">
+        DELETE from task
+        WHERE TASK_ID = #{task_id}
+    </delete>
+
+    <update id="update" parameterType="kr.re.keti.disposable.taskservice.task.Task" >
+        UPDATE TASK
+        SET
+        CATEGORY_ID = #{category},
+        NAME = #{name},
+        DESCRIPTION = #{description},
+        MODIFIER_ID = #{modifier},
+        UPDATED_TIME = now()
+        WHERE TASK_ID = #{taskId};
+        DELETE FROM OutputParameter where TASK_ID = #{id};
+        DELETE FROM StaticParameter where TASK_ID = #{id};
+        DELETE FROM FlexibleParameter where TASK_ID = #{id};
+        <include refid="addOutputParameters"></include>
+        <include refid="addStaticParameters"></include>
+        <include refid="addFlexibleParameters"></include>
+    </update>
+
+
+</mapper>

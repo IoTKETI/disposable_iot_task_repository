@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <p>Task 103</p>
+    <button value="103 start" id="103"></button>
+    <br/>
+    <p>Task 203</p>
+    <button value="203 start" id="203"></button>
+
+</body>
+<script type="text/javascript">
+    var data1 = {
+        "id" : "geUEeYoP",
+        "service" : {
+            "id": 101,
+            "name": "산불감시 서비스",
+            "description": "산불감시 서비스",
+            "type": "Service",
+            "microServices" : [
+                {
+                    "id": 101,
+                    "name": "모너터링 마이크로서비스",
+                    "description": "모너터링 마이크로서비스",
+                    "type": "MicroService",
+                    "tasks" : [
+                        {
+                            "id": 103,
+                            "name": "온도 센싱 태스크",
+                            "description": "osbp > avgt 인 경우에만 정상적인 동작",
+                            "category": {
+                                "id": "002",
+                                "name": "태스크",
+                                "order": 0
+                            },
+                            "outputParameters": [
+                                {
+                                    "dataType": "FLOAT",
+                                    "unitCategory": "atemp",
+                                    "unit": "℃",
+                                    "minValue": -40.0,
+                                    "maxValue": 120.0,
+                                    "id": 1
+                                }
+                            ],
+                            "flexibleParameters": [
+                                {
+                                    "id": 1,
+                                    "dataType": "INT32",
+                                    "fullName": "ObservingPeriod",
+                                    "shortName": "osbp",
+                                    "value": 60.0
+                                }
+
+                            ],
+                            "staticParameters": [
+                                {
+                                    "id": 1,
+                                    "dataType": "INT32",
+                                    "fullName": "MinObservePeriod",
+                                    "shortName": "miop",
+                                    "value": 0.0
+                                }
+                            ],
+                            "useYn": "Y",
+                            "creator": "KETI",
+                            "createdTime": "2019-12-09T18:19:44.933351",
+                            "modifiedTime": "2019-12-09T18:19:44.933351"
+                        }
+                    ],
+                    "useYn": "Y",
+                    "creator": "KETI",
+                    "createdTime": "2019-12-09T18:19:44.933351",
+                    "modifiedTime": "2019-12-09T18:19:44.933351"
+                }
+            ],
+            "useYn": "Y",
+            "creator": "KETI",
+            "createdTime": "2019-12-09T18:19:44.933351",
+            "modifiedTime": "2019-12-09T18:19:44.933351"
+        },
+        "name" : "service_template_1",
+        "creator" : "5dd639cbe3981f4128e24d41",
+        "description" : "service template example",
+        "createdTime" : "2019-11-26T04:18:48.312Z"
+    };
+
+    var data2 = {
+        "id" : "geUEeYoP",
+        "service" : {
+            "id": 101,
+            "name": "산불감시 서비스",
+            "description": "산불감시 서비스",
+            "type": "Service",
+            "microServices" : [
+                {
+                    "id": 101,
+                    "name": "모너터링 마이크로서비스",
+                    "description": "모너터링 마이크로서비스",
+                    "type": "MicroService",
+                    "tasks" : [
+                        {
+                            "id": 203,
+                            "name": "온도 센싱 태스크",
+                            "description": "osbp > avgt 인 경우에만 정상적인 동작",
+                            "category": {
+                                "id": "002",
+                                "name": "태스크",
+                                "order": 0
+                            },
+                            "outputParameters": [
+                                {
+                                    "dataType": "FLOAT",
+                                    "unitCategory": "atemp",
+                                    "unit": "℃",
+                                    "minValue": -40.0,
+                                    "maxValue": 120.0,
+                                    "id": 1
+                                }
+                            ],
+                            "flexibleParameters": [
+                                {
+                                    "id": 1,
+                                    "dataType": "INT32",
+                                    "fullName": "ObservingPeriod",
+                                    "shortName": "osbp",
+                                    "value": 5.0
+                                }
+                            ],
+                            "staticParameters": [
+                                {
+                                    "id": 1,
+                                    "dataType": "INT32",
+                                    "fullName": "MinObservePeriod",
+                                    "shortName": "miop",
+                                    "value": 0.0
+                                }
+                            ],
+                            "useYn": "Y",
+                            "creator": "KETI",
+                            "createdTime": "2019-12-09T18:19:44.933351",
+                            "modifiedTime": "2019-12-09T18:19:44.933351"
+                        }
+                    ],
+                    "useYn": "Y",
+                    "creator": "KETI",
+                    "createdTime": "2019-12-09T18:19:44.933351",
+                    "modifiedTime": "2019-12-09T18:19:44.933351"
+                }
+            ],
+            "useYn": "Y",
+            "creator": "KETI",
+            "createdTime": "2019-12-09T18:19:44.933351",
+            "modifiedTime": "2019-12-09T18:19:44.933351"
+        },
+        "name" : "service_template_1",
+        "creator" : "5dd639cbe3981f4128e24d41",
+        "description" : "service template example",
+        "createdTime" : "2019-11-26T04:18:48.312Z"
+    };
+
+
+
+    $(document).ready(function() {
+
+        $('#103').click(function () {
+            console.log(103);
+            $.ajax({
+                type:"POST",
+                url:"/deployService/task",
+                contentType: 'application/json',
+                data : JSON.stringify(data1),
+                dataType: "json",
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+        $('#203').click(function () {
+            console.log(203);
+            $.ajax({
+                type:"POST",
+                url:"/deployService/task",
+                contentType: 'application/json',
+                data : JSON.stringify(data2),
+                dataType: "json",
+                error: function(xhr, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+    });
+
+
+</script>
+</html>
