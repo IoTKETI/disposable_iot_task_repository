@@ -34,7 +34,7 @@
 
   - Shell script 사용
 
-    - 해당 폴더 내에서 task_service 최상위 폴더 git pull (Id: IoTKETI pw:keti12#)
+    - 해당 폴더 내에서 task_service 최상위 폴더 git pull
 
       ```shell
       $ git pull
