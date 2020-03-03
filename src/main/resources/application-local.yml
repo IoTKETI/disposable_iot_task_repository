@@ -7,9 +7,10 @@ spring:
   #DataSource
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/disposable
+#    url: jdbc:postgresql://localhost:5432/disposable
+    url: jdbc:postgresql://dockerhost:5432/disposable
     username: postgres
-    password: pass
+    password: keti123
 
   # NULL Field 제외
   jackson:
@@ -21,8 +22,8 @@ mybatis:
 
 
 service:
-  url: http://localhost:8080/cloudServer/deploy
-
+#  url: http://localhost:8080/cloudServer/deploy
+  url: http://dockerhost:8080/cloudServer/deploy
 
 
 logging:

@@ -13,4 +13,4 @@ echo "Deploy Server"
 cd target/
 nohup java -jar -Dspring.profiles.active=local taskservice-0.0.1-SNAPSHOT.jar &
 
-tail -f /home/keti/workspace/disposable_task_server/task_service/target/nohup.out
+tail -f ./nohup.out

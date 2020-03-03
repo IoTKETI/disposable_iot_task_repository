@@ -19,7 +19,7 @@ public class Service {
     private String description;
     private String type;
     private Category category;
-    private List<MicroService> microServices;
+    private List<MicroService> microservices;
     private String useYn;
     private String creator;
     private String modifier;

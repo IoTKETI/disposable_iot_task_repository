@@ -55,7 +55,7 @@ public class DeployService {
 //
     private void sendOrder(kr.re.keti.disposable.taskservice.task.Service service) {
 
-        Order order = new Order(service.getMicroServices(),"서비스로 task 전송", LocalDateTime.now());
+        Order order = new Order(service.getMicroservices(),"서비스로 task 전송", LocalDateTime.now());
         log.debug("order : {}",order);
         try {
             retryTemplate.execute((RetryCallback<Void, Exception>) context -> {
