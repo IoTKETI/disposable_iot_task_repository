@@ -54,11 +54,11 @@
         S.STATIC_PARAMETER_ID AS "StaticParameterId",S.DATA_TYPE AS "StaticParameterDataType", S.FULL_NAME AS "StaticParameterFullName", S.SHORT_NAME AS "StaticParameterShortName", S.VALUE AS "StaticParameterValue",
         F.FLEXIBLE_PARAMETER_ID AS "FlexibleParameterId", F.DATA_TYPE AS "FlexibleParameterDataType", F.FULL_NAME AS "FlexibleParameterFullName", F.SHORT_NAME AS "FlexibleParameterShortName", F.VALUE AS "FlexibleParameterValue",
         C.CATEGORY_ID AS "CategoryId", C.NAME AS "CategoryName"
-        FROM TASK AS T
-        LEFT OUTER JOIN OUTPUT_PARAMETER AS O on (T.TASK_ID = O.TASK_ID)
-        LEFT OUTER JOIN FLEXIBLE_PARAMETER AS F on (T.TASK_ID = F.TASK_ID)
-        LEFT OUTER JOIN STATIC_PARAMETER AS S on (T.TASK_ID = S.TASK_ID)
-        LEFT OUTER JOIN CATEGORY AS C on (T.CATEGORY_ID = C.CATEGORY_ID)
+        FROM disposable.TASK AS T
+        LEFT OUTER JOIN disposable.OUTPUT_PARAMETER AS O on (T.TASK_ID = O.TASK_ID)
+        LEFT OUTER JOIN disposable.FLEXIBLE_PARAMETER AS F on (T.TASK_ID = F.TASK_ID)
+        LEFT OUTER JOIN disposable.STATIC_PARAMETER AS S on (T.TASK_ID = S.TASK_ID)
+        LEFT OUTER JOIN disposable.CATEGORY AS C on (T.CATEGORY_ID = C.CATEGORY_ID)
         AND T.USE_YES_OR_NO = 'Y'
         <include refid="conditionalSearch"></include>
         ORDER BY T.task_id ASC
@@ -87,10 +87,10 @@
         O.UNIT AS "OutPutParameterUnit", O.MIN_VALUE AS "OutPutParameterMinValue", O.MAX_VALUE AS "OutPutParameterMaxValue",
         S.STATIC_PARAMETER_ID AS "StaticParameterId",S.DATA_TYPE AS "StaticParameterDataType", S.FULL_NAME AS "StaticParameterFullName", S.SHORT_NAME AS "StaticParameterShortName", S.VALUE AS "StaticParameterValue",
         F.FLEXIBLE_PARAMETER_ID AS "FlexibleParameterId", F.DATA_TYPE AS "FlexibleParameterDataType", F.FULL_NAME AS "FlexibleParameterFullName", F.SHORT_NAME AS "FlexibleParameterShortName", F.VALUE AS "FlexibleParameterValue"
-        FROM TASK AS T
-        LEFT OUTER JOIN OUTPUT_PARAMETER AS O on (T.TASK_ID = O.TASK_ID)
-        LEFT OUTER JOIN FLEXIBLE_PARAMETER AS F on (T.TASK_ID = F.TASK_ID)
-        LEFT OUTER JOIN STATIC_PARAMETER AS S on (T.TASK_ID = S.TASK_ID)
+        FROM disposable.TASK AS T
+        LEFT OUTER JOIN disposable.OUTPUT_PARAMETER AS O on (T.TASK_ID = O.TASK_ID)
+        LEFT OUTER JOIN disposable.FLEXIBLE_PARAMETER AS F on (T.TASK_ID = F.TASK_ID)
+        LEFT OUTER JOIN disposable.STATIC_PARAMETER AS S on (T.TASK_ID = S.TASK_ID)
         AND T.USE_YES_OR_NO = 'Y'
         WHERE T.TASK_Id = #{id}
     </select>
